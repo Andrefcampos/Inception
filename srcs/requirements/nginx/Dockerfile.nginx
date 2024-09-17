@@ -1,0 +1,29 @@
+FROM alpine:3.19
+
+# Instalar NGINX e OpenSSL
+RUN apk update && apk upgrade && apk add --no-cache nginx
+
+RUN apk add --no-cache openssl
+
+# Gerar certificados SSL autoassinados
+RUN openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:2048 \
+    -keyout /etc/ssl/private/private.key \
+    -out /etc/ssl/certs/certificate.crt \
+    -subj "/C=BR/ST=SP/L=Sao Paulo/O=42sp/CN=andrefil.42.fr"
+
+# Copiar configuração do NGINX
+COPY ./conf/nginx.conf /etc/nginx/conf.d
+
+# Certifique-se de que o grupo e o usuário www-data existem
+RUN if ! getent group www-data; then addgroup -S www-data; fi && \
+    if ! getent passwd www-data; then adduser -S -G www-data www-data; fi
+
+# Definir permissões apropriadas
+RUN chmod 755 /var/www
+RUN chown -R www-data:www-data /var/www
+
+# Expor a porta 443 para HTTPS
+# EXPOSE 443
+
+# Iniciar o NGINX
+CMD ["nginx", "-g", "daemon off;"]

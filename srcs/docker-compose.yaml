@@ -1,0 +1,94 @@
+version: '3.8'
+
+networks:
+  inception:
+    name: inception
+
+services:
+  nginx:
+    image: nginx:42sp
+    container_name: nginx
+
+    build:
+      context: requirements/nginx
+      dockerfile: Dockerfile.nginx
+    restart: on-failure
+    ports:
+      - "443:443"
+    depends_on:
+      - wordpress
+    networks:
+      - inception
+    volumes:
+      - wordpress_volume:/var/www/wordpress
+
+  mariadb:
+    image: db-mariadb:42sp
+    container_name: mariadb
+
+    env_file:
+      - .env
+    build:
+      context: requirements/mariadb
+      dockerfile: Dockerfile.mariadb
+      args:
+        - ADMIN_NAME=${ADMIN_NAME}
+        - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+        - DB_NAME=${DB_NAME}
+    environment:
+      - ADMIN_NAME
+      - ADMIN_PASSWORD
+      - DB_NAME
+    volumes:
+      - mariadb_volume:/var/lib/mysql
+    networks:
+      - inception
+    restart: on-failure
+
+  wordpress:
+    image: web-wordpress:42sp
+    container_name: wordpress
+
+    build:
+      context: requirements/wordpress
+      dockerfile: Dockerfile.wordpress
+      args:
+        - DB_NAME=${DB_NAME}
+        - TITLE=${TITLE}
+        - ADMIN_NAME=${ADMIN_NAME}
+        - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+        - ADMIN_EMAIL=${ADMIN_EMAIL}
+        - USER_NAME=${USER_NAME}
+        - USER_PASSWORD=${USER_PASSWORD}
+        - USER_EMAIL=${USER_EMAIL}
+    environment:
+      - DB_NAME
+      - TITLE
+      - ADMIN_NAME
+      - ADMIN_PASSWORD
+      - ADMIN_EMAIL
+      - USER_NAME
+      - USER_PASSWORD
+      - USER_EMAIL
+    restart: on-failure
+    networks:
+      - inception
+    volumes:
+     - wordpress_volume:/var/www/wordpress
+    depends_on:
+      - mariadb
+
+volumes:
+  wordpress_volume:
+    name: wordpress_volume
+    driver_opts:
+      o: bind
+      type: none
+      device: /home/andrefil/data/wordpress
+
+  mariadb_volume:
+    name: mariadb_volume
+    driver_opts:
+      o: bind
+      type: none
+      device: /home/andrefil/data/mariadb
