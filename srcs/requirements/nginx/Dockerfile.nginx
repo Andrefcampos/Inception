@@ -14,7 +14,7 @@ RUN openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:2048 \
 # Copiar configuração do NGINX
 COPY ./conf/nginx.conf /etc/nginx/conf.d
 
-# Certifique-se de que o grupo e o usuário www-data existem
+# Certificando se o grupo e o usuário www-data existem
 RUN if ! getent group www-data; then addgroup -S www-data; fi && \
     if ! getent passwd www-data; then adduser -S -G www-data www-data; fi
 
