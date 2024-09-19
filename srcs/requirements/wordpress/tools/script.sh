@@ -21,7 +21,7 @@ wp user create --allow-root	\
 	--user_pass=$USER_PASSWORD \
 	--role='author'
 
-# Activate the Twenty Twenty-Four theme.
+# Activate the Twenty Twenty-four theme.
 wp --allow-root theme activate twentytwentyfour
 
 exec php-fpm7.4 -F

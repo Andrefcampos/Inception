@@ -12,7 +12,7 @@ config:
 	@echo "HELLO!!! WELCOME TO INCEPTION."
 
 	@if [ ! -f ./srcs/.env ]; then \
-		wget -O ./srcs/.env https://raw.githubusercontent.com/andrefil/Inception/main/srcs/.env; \
+		wget -O ./srcs/.env https://raw.githubusercontent.com/Andrefcampos/Inception/main/srcs/.env; \
 	fi
 
 	@if ! grep -q '$(USER)' /etc/hosts; then \
@@ -45,6 +45,7 @@ clean:
 	$(DOCKER_COMPOSE_EXEC) down --rmi all --volumes
 
 fclean: clean
+	rm ./srcs/.env
 	docker system prune --force --all --volumes
 	sudo rm -rf /home/$(USER)
 
