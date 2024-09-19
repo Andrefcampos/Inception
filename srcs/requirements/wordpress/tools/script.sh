@@ -8,7 +8,7 @@ wp --allow-root config create \
 	--dbprefix="wp_"
 
 wp core install --allow-root \
-	--path=/var/www/wordpress \
+	--path=/var/www/html \
 	--title="$TITLE" \
 	--url=$DOMAIN \
 	--admin_user=$ADMIN_NAME \
@@ -16,7 +16,7 @@ wp core install --allow-root \
 	--admin_email=$ADMIN_EMAIL
 
 wp user create --allow-root	\
-	--path=/var/www/wordpress \
+	--path=/var/www/html \
 	"$USER_NAME" "$USER_EMAIL" \
 	--user_pass=$USER_PASSWORD \
 	--role='author'

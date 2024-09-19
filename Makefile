@@ -1,52 +1,52 @@
 
-LOGIN=andrefil
-MARIA_DIR=/home/$(LOGIN)/data/mariadb
-WORDPRESS_DIR=/home/$(LOGIN)/data/wordpress
+USER=andrefil
+MARIA_DB_DIR=/home/$(USER)/data/mariadb
+WP_PHP_DIR=/home/$(USER)/data/wordpress
 
-DOCKER_COMPOSE_FILE=./srcs/docker-compose.yml
-DOCKER_COMPOSE_COMMAND=docker-compose -f $(DOCKER_COMPOSE_FILE)
+DOCKER_COMPOSE=./srcs/docker-compose.yml
+DOCKER_COMPOSE_EXEC=docker-compose -f $(DOCKER_COMPOSE)
 
 all: config up
 
 config:
-	@echo oi
+	@echo "HELLO!!! WELCOME TO INCEPTION."
 
 	@if [ ! -f ./srcs/.env ]; then \
 		wget -O ./srcs/.env https://raw.githubusercontent.com/andrefil/Inception/main/srcs/.env; \
 	fi
 
-	@if ! grep -q '$(LOGIN)' /etc/hosts; then \
-		echo "127.0.0.1 $(LOGIN).42.fr" | sudo tee -a /etc/hosts > /dev/null; \
+	@if ! grep -q '$(USER)' /etc/hosts; then \
+		echo "127.0.0.1 $(USER).42.fr" | sudo tee -a /etc/hosts > /dev/null; \
 	fi
 
-	@if [ ! -d "$(WORDPRESS_DIR)" ]; then \
-		sudo mkdir -p $(WORDPRESS_DIR); \
+	@if [ ! -d "$(WP_PHP_DIR)" ]; then \
+		sudo mkdir -p $(WP_PHP_DIR); \
 	fi
-	@if [ ! -d "$(MARIA_DIR)" ]; then \
-		sudo mkdir -p $(MARIA_DIR); \
+	@if [ ! -d "$(MARIA_DB_DIR)" ]; then \
+		sudo mkdir -p $(MARIA_DB_DIR); \
 	fi
 
 up: build
-	$(DOCKER_COMPOSE_COMMAND) up -d
+	$(DOCKER_COMPOSE_EXEC) up -d
 
 build:
-	$(DOCKER_COMPOSE_COMMAND) build
+	$(DOCKER_COMPOSE_EXEC) build
 
 down:
-	$(DOCKER_COMPOSE_COMMAND) down
+	$(DOCKER_COMPOSE_EXEC) down
 
 ps:
-	$(DOCKER_COMPOSE_COMMAND) ps
+	$(DOCKER_COMPOSE_EXEC) ps
 
 ls:
 	docker volume ls
 
 clean:
-	$(DOCKER_COMPOSE_COMMAND) down --rmi all --volumes
+	$(DOCKER_COMPOSE_EXEC) down --rmi all --volumes
 
 fclean: clean
 	docker system prune --force --all --volumes
-	sudo rm -rf /home/$(LOGIN)
+	sudo rm -rf /home/$(USER)
 
 re: fclean all
 

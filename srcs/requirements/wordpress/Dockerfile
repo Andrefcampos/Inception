@@ -22,4 +22,4 @@ COPY tools/script.sh /tmp/wp_setup.sh
 
 RUN chmod 777 /tmp/wp_setup.sh
 
-ENTRYPOINT ["/tmp/wp_setup.sh"]
+CMD ["/tmp/wp_setup.sh"]
