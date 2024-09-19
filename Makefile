@@ -1,8 +1,9 @@
+
 LOGIN=andrefil
 MARIA_DIR=/home/$(LOGIN)/data/mariadb
 WORDPRESS_DIR=/home/$(LOGIN)/data/wordpress
 
-DOCKER_COMPOSE_FILE=./srcs/docker-compose.yaml
+DOCKER_COMPOSE_FILE=./srcs/docker-compose.yml
 DOCKER_COMPOSE_COMMAND=docker-compose -f $(DOCKER_COMPOSE_FILE)
 
 all: config up
@@ -10,9 +11,9 @@ all: config up
 config:
 	@echo oi
 
-# 	@if [ ! -f ./srcs/.env ]; then \
-# 		wget -O ./srcs/.env https://raw.githubusercontent.com/andrefcampos/inception/main/srcs/.env; \
-# 	fi
+	@if [ ! -f ./srcs/.env ]; then \
+		wget -O ./srcs/.env https://raw.githubusercontent.com/andrefil/Inception/main/srcs/.env; \
+	fi
 
 	@if ! grep -q '$(LOGIN)' /etc/hosts; then \
 		echo "127.0.0.1 $(LOGIN).42.fr" | sudo tee -a /etc/hosts > /dev/null; \
