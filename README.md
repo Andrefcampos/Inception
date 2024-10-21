@@ -1,4 +1,7 @@
-# Inception - 42 Project
+# Inception
+
+![42 São Paulo](https://img.shields.io/badge/42-SP-000000)
+
 ## Description
 
 The Inception project aims to implement a basic infrastructure using Docker containers. It involves setting up three main services: a web server with NGINX, a MariaDB database, and a WordPress site, all orchestrated via Docker Compose. The operating system used in the containers is Debian.
