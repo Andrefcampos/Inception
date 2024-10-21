@@ -49,19 +49,6 @@ make
 https://localhost
 ```
 
-## Environment Configuration
-
-### MariaDB Database:
- - User: root
- - Password: password
- - Database: wordpress_db
-
-### WordPress Configuration:
- - URL: https://localhost
- - Site title: Inception Site
- - Admin user: admin
- - Password: adminpassword
-
 ## Contribution
 
 Feel free to submit pull requests or open issues to report problems and suggest improvements.
